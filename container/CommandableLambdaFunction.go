@@ -74,7 +74,7 @@ func (c *CommandableLambdaFunction) registerCommandSet(commandSet *ccomands.Comm
 	for index := 0; index < len(commands); index++ {
 		command := commands[index]
 
-		c.RegisterAction(command.Name(), nil, func(ctx context.Context, params map[string]any) (result interface{}, err error) {
+		c.RegisterAction(command.Name(), nil, func(ctx context.Context, params map[string]any) (result any, err error) {
 
 			correlationId, _ := params["correlation_id"].(string)
 

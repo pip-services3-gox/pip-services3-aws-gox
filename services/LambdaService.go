@@ -58,7 +58,7 @@ type ILambdaServiceOverrides interface {
 //	}
 //
 //	func (c * LambdaService)  Register() {
-//		c.RegisterAction("get_mydata", nil,  func(ctx context.Context, params map[string]any)(interface{}, error) {
+//		c.RegisterAction("get_mydata", nil,  func(ctx context.Context, params map[string]any)(any, error) {
 //	        correlationId := params.GetAsString("correlation_id")
 //	        id := params.GetAsString("id")
 //			return  c.controller.GetMyData(ctx, correlationId, id)
@@ -83,7 +83,7 @@ type LambdaService struct { // ILambdaService, IOpenable, IConfigurable, IRefere
 
 	name         string
 	actions      []*LambdaAction
-	interceptors []func(ctx context.Context, params map[string]any, next func(ctx context.Context, params map[string]any) (interface{}, error)) (interface{}, error)
+	interceptors []func(ctx context.Context, params map[string]any, next func(ctx context.Context, params map[string]any) (any, error)) (any, error)
 	opened       bool
 
 	Overrides ILambdaServiceOverrides
@@ -105,7 +105,7 @@ func InheritLambdaService(overrides ILambdaServiceOverrides, name string) *Lambd
 		Overrides:          overrides,
 		name:               name,
 		actions:            make([]*LambdaAction, 0),
-		interceptors:       make([]func(ctx context.Context, params map[string]any, next func(ctx context.Context, params map[string]any) (interface{}, error)) (interface{}, error), 0),
+		interceptors:       make([]func(ctx context.Context, params map[string]any, next func(ctx context.Context, params map[string]any) (any, error)) (any, error), 0),
 		DependencyResolver: cref.NewDependencyResolver(),
 		Logger:             clog.NewCompositeLogger(),
 		Counters:           ccount.NewCompositeCounters(),
@@ -187,13 +187,13 @@ func (c *LambdaService) Close(ctx context.Context, correlationId string) error {
 
 	c.opened = false
 	c.actions = make([]*LambdaAction, 0)
-	c.interceptors = make([]func(ctx context.Context, params map[string]any, next func(ctx context.Context, params map[string]any) (interface{}, error)) (interface{}, error), 0)
+	c.interceptors = make([]func(ctx context.Context, params map[string]any, next func(ctx context.Context, params map[string]any) (any, error)) (any, error), 0)
 	return nil
 }
 
-func (c *LambdaService) ApplyValidation(schema *cvalid.Schema, action func(ctx context.Context, params map[string]any) (interface{}, error)) func(context.Context, map[string]any) (interface{}, error) {
+func (c *LambdaService) ApplyValidation(schema *cvalid.Schema, action func(ctx context.Context, params map[string]any) (any, error)) func(context.Context, map[string]any) (any, error) {
 	// Create an action function
-	actionWrapper := func(ctx context.Context, params map[string]any) (interface{}, error) {
+	actionWrapper := func(ctx context.Context, params map[string]any) (any, error) {
 		// Validate object
 		if schema != nil && params != nil {
 			// Perform validation
@@ -209,13 +209,13 @@ func (c *LambdaService) ApplyValidation(schema *cvalid.Schema, action func(ctx c
 	return actionWrapper
 }
 
-func (c *LambdaService) ApplyInterceptors(action func(context.Context, map[string]any) (interface{}, error)) func(context.Context, map[string]any) (interface{}, error) {
+func (c *LambdaService) ApplyInterceptors(action func(context.Context, map[string]any) (any, error)) func(context.Context, map[string]any) (any, error) {
 	actionWrapper := action
 
 	for index := len(c.interceptors) - 1; index >= 0; index-- {
 		interceptor := c.interceptors[index]
-		actionWrapper = (func(action func(context.Context, map[string]any) (interface{}, error)) func(context.Context, map[string]any) (interface{}, error) {
-			return func(ctx context.Context, params map[string]any) (interface{}, error) {
+		actionWrapper = (func(action func(context.Context, map[string]any) (any, error)) func(context.Context, map[string]any) (any, error) {
+			return func(ctx context.Context, params map[string]any) (any, error) {
 				return interceptor(ctx, params, action)
 			}
 		})(actionWrapper)
@@ -238,14 +238,14 @@ func (c *LambdaService) GenerateActionCmd(name string) string {
 //		- name          an action name
 //		- schema        a validation schema to validate received parameters.
 //		- action        an action function that is called when operation is invoked.
-func (c *LambdaService) RegisterAction(name string, schema *cvalid.Schema, action func(ctx context.Context, params map[string]any) (interface{}, error)) {
+func (c *LambdaService) RegisterAction(name string, schema *cvalid.Schema, action func(ctx context.Context, params map[string]any) (any, error)) {
 	actionWrapper := c.ApplyValidation(schema, action)
 	actionWrapper = c.ApplyInterceptors(actionWrapper)
 
 	registeredAction := &LambdaAction{
 		Cmd:    c.GenerateActionCmd(name),
 		Schema: schema,
-		Action: func(ctx context.Context, params map[string]any) (interface{}, error) {
+		Action: func(ctx context.Context, params map[string]any) (any, error) {
 			return actionWrapper(ctx, params)
 		},
 	}
@@ -259,12 +259,12 @@ func (c *LambdaService) RegisterAction(name string, schema *cvalid.Schema, actio
 //		-  authorize     an authorization interceptor
 //		-  action        an action function that is called when operation is invoked.
 func (c *LambdaService) RegisterActionWithAuth(name string, schema *cvalid.Schema,
-	authorize func(ctx context.Context, params map[string]any, next func(context.Context, map[string]any) (interface{}, error)) (interface{}, error),
-	action func(ctx context.Context, params map[string]any) (interface{}, error)) {
+	authorize func(ctx context.Context, params map[string]any, next func(context.Context, map[string]any) (any, error)) (any, error),
+	action func(ctx context.Context, params map[string]any) (any, error)) {
 
 	actionWrapper := c.ApplyValidation(schema, action)
 	// Add authorization just before validation
-	actionWrapper = func(ctx context.Context, params map[string]any) (interface{}, error) {
+	actionWrapper = func(ctx context.Context, params map[string]any) (any, error) {
 		return authorize(ctx, params, actionWrapper)
 	}
 	actionWrapper = c.ApplyInterceptors(actionWrapper)
@@ -272,7 +272,7 @@ func (c *LambdaService) RegisterActionWithAuth(name string, schema *cvalid.Schem
 	registeredAction := &LambdaAction{
 		Cmd:    c.GenerateActionCmd(name),
 		Schema: schema,
-		Action: func(ctx context.Context, params map[string]any) (interface{}, error) {
+		Action: func(ctx context.Context, params map[string]any) (any, error) {
 			return actionWrapper(ctx, params)
 		},
 	}
@@ -281,7 +281,7 @@ func (c *LambdaService) RegisterActionWithAuth(name string, schema *cvalid.Schem
 
 // Registers a middleware for actions in AWS Lambda service.
 // -  action        an action function that is called when middleware is invoked.
-func (c *LambdaService) RegisterInterceptor(action func(ctx context.Context, params map[string]any, next func(ctx context.Context, params map[string]any) (interface{}, error)) (interface{}, error)) {
+func (c *LambdaService) RegisterInterceptor(action func(ctx context.Context, params map[string]any, next func(ctx context.Context, params map[string]any) (any, error)) (any, error)) {
 	c.interceptors = append(c.interceptors, action)
 }
 
@@ -299,7 +299,7 @@ func (c *LambdaService) Register() {
 //	Parameters:
 //		- ctx context.Context	operation context.
 //		-  params action parameters.
-func (c *LambdaService) Act(ctx context.Context, params map[string]any) (interface{}, error) {
+func (c *LambdaService) Act(ctx context.Context, params map[string]any) (any, error) {
 	cmd, ok := params["cmd"].(string)
 	correlationId, _ := params["correlation_id"].(string)
 

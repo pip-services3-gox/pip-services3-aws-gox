@@ -71,7 +71,7 @@ import (
 //		}
 //	}
 //
-//	func (c *MyLambdaFunction) getOneById(ctx context.Context, params map[string]any) (interface{}, error) {
+//	func (c *MyLambdaFunction) getOneById(ctx context.Context, params map[string]any) (any, error) {
 //		correlationId, _ := params["correlation_id"].(string)
 //		return c.controller.GetOneById(
 //			ctx,
@@ -108,7 +108,7 @@ type LambdaFunction struct {
 	// The map of registred validation schemas
 	schemas map[string]*cvalid.Schema
 	// The map of registered actions.
-	actions map[string]func(context.Context, map[string]any) (interface{}, error)
+	actions map[string]func(context.Context, map[string]any) (any, error)
 	// The default path to config file
 	configPath string
 }
@@ -123,7 +123,7 @@ func InheriteLambdaFunction(overrides ILambdaFunctionOverrides, name string, des
 		tracer:             ctrace.NewCompositeTracer(),
 		DependencyResolver: cref.NewDependencyResolver(),
 		schemas:            make(map[string]*cvalid.Schema, 0),
-		actions:            make(map[string]func(context.Context, map[string]any) (interface{}, error), 0),
+		actions:            make(map[string]func(context.Context, map[string]any) (any, error), 0),
 		configPath:         "./config/config.yml",
 		Overrides:          overrides,
 	}
@@ -216,11 +216,11 @@ func (c *LambdaFunction) Instrument(ctx context.Context, correlationId string, n
 //		- correlationId  string  (optional) transaction id to trace execution through call chain.
 //		- name    string         a method name.
 //		- err     error          an occured error
-//		- result  interface{}    (optional) an execution result
-// Returns:  result interface{}, err error
+//		- result  any    (optional) an execution result
+// Returns:  result any, err error
 // (optional) an execution callback
 func (c *LambdaFunction) InstrumentError(ctx context.Context, correlationId string, name string, errIn error,
-	resIn interface{}) (result interface{}, err error) {
+	resIn any) (result any, err error) {
 	if errIn != nil {
 		c.Logger().Error(ctx, correlationId, errIn, "Failed to execute %s method", name)
 		c.counters.IncrementOne(ctx, name+".exec_errors")
@@ -305,7 +305,7 @@ func (c *LambdaFunction) RegisterServices() {
 //		- schema        a validation schema to validate received parameters.
 //		- action        an action function that is called when action is invoked.
 func (c *LambdaFunction) RegisterAction(cmd string, schema *cvalid.Schema,
-	action func(ctx context.Context, params map[string]any) (result interface{}, err error)) error {
+	action func(ctx context.Context, params map[string]any) (result any, err error)) error {
 
 	if cmd == "" {
 		return cerr.NewUnknownError("", "NO_COMMAND", "Missing command")
@@ -316,7 +316,7 @@ func (c *LambdaFunction) RegisterAction(cmd string, schema *cvalid.Schema,
 	}
 
 	// Hack!!! Wrapping action to preserve prototyping context
-	actionCurl := func(ctx context.Context, params map[string]any) (interface{}, error) {
+	actionCurl := func(ctx context.Context, params map[string]any) (any, error) {
 		// Perform validation
 		if schema != nil {
 			correlationId, _ := params["correlaton_id"].(string)

@@ -15,5 +15,5 @@ type LambdaAction struct {
 	Schema *cvalid.Schema
 
 	// Action to be executed
-	Action func(ctx context.Context, params map[string]any) (interface{}, error)
+	Action func(ctx context.Context, params map[string]any) (any, error)
 }

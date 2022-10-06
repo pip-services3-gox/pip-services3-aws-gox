@@ -34,7 +34,7 @@ func (c *DummyCommandSet) makeGetPageByFilterCommand() ccomand.ICommand {
 	return ccomand.NewCommand(
 		"get_dummies",
 		cvalid.NewObjectSchema().WithOptionalProperty("filter", cvalid.NewFilterParamsSchema()).WithOptionalProperty("paging", cvalid.NewPagingParamsSchema()),
-		func(ctx context.Context, correlationId string, args *crun.Parameters) (result interface{}, err error) {
+		func(ctx context.Context, correlationId string, args *crun.Parameters) (result any, err error) {
 			var filter *cdata.FilterParams
 			var paging *cdata.PagingParams
 
@@ -53,7 +53,7 @@ func (c *DummyCommandSet) makeGetOneByIdCommand() ccomand.ICommand {
 	return ccomand.NewCommand(
 		"get_dummy_by_id",
 		cvalid.NewObjectSchema().WithRequiredProperty("dummy_id", cconv.String),
-		func(ctx context.Context, correlationId string, args *crun.Parameters) (result interface{}, err error) {
+		func(ctx context.Context, correlationId string, args *crun.Parameters) (result any, err error) {
 			id := args.GetAsString("dummy_id")
 			return c.controller.GetOneById(ctx, correlationId, id)
 		},
@@ -64,7 +64,7 @@ func (c *DummyCommandSet) makeCreateCommand() ccomand.ICommand {
 	return ccomand.NewCommand(
 		"create_dummy",
 		cvalid.NewObjectSchema().WithRequiredProperty("dummy", NewDummySchema()),
-		func(ctx context.Context, correlationId string, args *crun.Parameters) (result interface{}, err error) {
+		func(ctx context.Context, correlationId string, args *crun.Parameters) (result any, err error) {
 			var entity Dummy
 
 			if _val, ok := args.Get("dummy"); ok {
@@ -84,7 +84,7 @@ func (c *DummyCommandSet) makeUpdateCommand() ccomand.ICommand {
 	return ccomand.NewCommand(
 		"update_dummy",
 		cvalid.NewObjectSchema().WithRequiredProperty("dummy", NewDummySchema()),
-		func(ctx context.Context, correlationId string, args *crun.Parameters) (result interface{}, err error) {
+		func(ctx context.Context, correlationId string, args *crun.Parameters) (result any, err error) {
 			var entity Dummy
 
 			if _val, ok := args.Get("dummy"); ok {
@@ -104,7 +104,7 @@ func (c *DummyCommandSet) makeDeleteByIdCommand() ccomand.ICommand {
 	return ccomand.NewCommand(
 		"delete_dummy",
 		cvalid.NewObjectSchema().WithRequiredProperty("dummy_id", cconv.String),
-		func(ctx context.Context, correlationId string, args *crun.Parameters) (result interface{}, err error) {
+		func(ctx context.Context, correlationId string, args *crun.Parameters) (result any, err error) {
 			id := args.GetAsString("dummy_id")
 			return c.controller.DeleteById(ctx, correlationId, id)
 		},

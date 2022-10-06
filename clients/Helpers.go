@@ -9,9 +9,9 @@ import (
 
 //ConvertComandResult method helps get correct result from JSON by prototype
 //Parameters:
-//   - comRes interface{}  input JSON string
+//   - comRes any  input JSON string
 //   - prototype reflect.Type output object prototype
-// Returns: convRes interface{}, err error
+// Returns: convRes any, err error
 func HandleLambdaResponse[T any](data *lambda.InvokeOutput) (convRes T, err error) {
 	if data.Payload != nil && len(data.Payload) > 0 {
 

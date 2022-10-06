@@ -33,7 +33,7 @@ func (c *DummyLambdaService) SetReferences(ctx context.Context, references cref.
 	}
 }
 
-func (c *DummyLambdaService) getPageByFilter(ctx context.Context, params map[string]any) (interface{}, error) {
+func (c *DummyLambdaService) getPageByFilter(ctx context.Context, params map[string]any) (any, error) {
 	correlationId, _ := params["correlation_id"].(string)
 	return c.controller.GetPageByFilter(ctx,
 		correlationId,
@@ -42,7 +42,7 @@ func (c *DummyLambdaService) getPageByFilter(ctx context.Context, params map[str
 	)
 }
 
-func (c *DummyLambdaService) getOneById(ctx context.Context, params map[string]any) (interface{}, error) {
+func (c *DummyLambdaService) getOneById(ctx context.Context, params map[string]any) (any, error) {
 	correlationId, _ := params["correlation_id"].(string)
 	return c.controller.GetOneById(ctx,
 		correlationId,
@@ -50,7 +50,7 @@ func (c *DummyLambdaService) getOneById(ctx context.Context, params map[string]a
 	)
 }
 
-func (c *DummyLambdaService) create(ctx context.Context, params map[string]any) (interface{}, error) {
+func (c *DummyLambdaService) create(ctx context.Context, params map[string]any) (any, error) {
 	correlationId, _ := params["correlation_id"].(string)
 	val, _ := json.Marshal(params["dummy"])
 	var entity awstest.Dummy
@@ -61,7 +61,7 @@ func (c *DummyLambdaService) create(ctx context.Context, params map[string]any) 
 	)
 }
 
-func (c *DummyLambdaService) update(ctx context.Context, params map[string]any) (interface{}, error) {
+func (c *DummyLambdaService) update(ctx context.Context, params map[string]any) (any, error) {
 	correlationId, _ := params["correlation_id"].(string)
 	val, _ := json.Marshal(params["dummy"])
 	var entity awstest.Dummy
@@ -72,7 +72,7 @@ func (c *DummyLambdaService) update(ctx context.Context, params map[string]any) 
 	)
 }
 
-func (c *DummyLambdaService) deleteById(ctx context.Context, params map[string]any) (interface{}, error) {
+func (c *DummyLambdaService) deleteById(ctx context.Context, params map[string]any) (any, error) {
 	correlationId, _ := params["correlation_id"].(string)
 	return c.controller.DeleteById(ctx,
 		correlationId,

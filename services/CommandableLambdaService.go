@@ -89,7 +89,7 @@ func (c *CommandableLambdaService) Register() {
 	for index := 0; index < len(commands); index++ {
 		command := commands[index]
 		name := command.Name()
-		c.RegisterAction(name, nil, func(ctx context.Context, params map[string]any) (interface{}, error) {
+		c.RegisterAction(name, nil, func(ctx context.Context, params map[string]any) (any, error) {
 			correlationId, _ := params["correlation_id"].(string)
 
 			args := crun.NewParametersFromValue(params)

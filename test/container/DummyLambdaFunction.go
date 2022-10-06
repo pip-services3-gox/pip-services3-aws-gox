@@ -34,7 +34,7 @@ func (c *DummyLambdaFunction) SetReferences(ctx context.Context, references cref
 	}
 }
 
-func (c *DummyLambdaFunction) getPageByFilter(ctx context.Context, params map[string]any) (interface{}, error) {
+func (c *DummyLambdaFunction) getPageByFilter(ctx context.Context, params map[string]any) (any, error) {
 	correlationId, _ := params["correlation_id"].(string)
 	return c.controller.GetPageByFilter(
 		ctx,
@@ -44,7 +44,7 @@ func (c *DummyLambdaFunction) getPageByFilter(ctx context.Context, params map[st
 	)
 }
 
-func (c *DummyLambdaFunction) getOneById(ctx context.Context, params map[string]any) (interface{}, error) {
+func (c *DummyLambdaFunction) getOneById(ctx context.Context, params map[string]any) (any, error) {
 	correlationId, _ := params["correlation_id"].(string)
 	return c.controller.GetOneById(
 		ctx,
@@ -53,7 +53,7 @@ func (c *DummyLambdaFunction) getOneById(ctx context.Context, params map[string]
 	)
 }
 
-func (c *DummyLambdaFunction) create(ctx context.Context, params map[string]any) (interface{}, error) {
+func (c *DummyLambdaFunction) create(ctx context.Context, params map[string]any) (any, error) {
 	correlationId, _ := params["correlation_id"].(string)
 	val, _ := json.Marshal(params["dummy"])
 	var entity = awstest.Dummy{}
@@ -72,7 +72,7 @@ func (c *DummyLambdaFunction) create(ctx context.Context, params map[string]any)
 	return res, err
 }
 
-func (c *DummyLambdaFunction) update(ctx context.Context, params map[string]any) (interface{}, error) {
+func (c *DummyLambdaFunction) update(ctx context.Context, params map[string]any) (any, error) {
 	correlationId, _ := params["correlation_id"].(string)
 	val, _ := json.Marshal(params["dummy"])
 	var entity = awstest.Dummy{}
@@ -84,7 +84,7 @@ func (c *DummyLambdaFunction) update(ctx context.Context, params map[string]any)
 	)
 }
 
-func (c *DummyLambdaFunction) deleteById(ctx context.Context, params map[string]any) (interface{}, error) {
+func (c *DummyLambdaFunction) deleteById(ctx context.Context, params map[string]any) (any, error) {
 	correlationId, _ := params["correlation_id"].(string)
 
 	c.Logger().Debug(ctx, correlationId, "DeleteById method called Id %v", params["dummy_id"].(string))

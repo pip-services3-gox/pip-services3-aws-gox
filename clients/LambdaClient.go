@@ -55,13 +55,13 @@ import (
 //		...
 //	}
 //
-//	func (c* MyLambdaClient) getData(correlationId string, id string)(result MyData, err error){
-//		timing := c.Instrument(correlationId, "myclient.get_data");
-//		callRes, callErr := c.Call(MyDataPageType ,"get_data" correlationId, map[string]interface{ "id": id })
+//	func (c* MyLambdaClient) getData(ctx context.Context, correlationId string, id string)(result MyData, err error){
+//		timing := c.Instrument(ctx, correlationId, "myclient.get_data");
+//		callRes, callErr := c.Call(ctx ,"get_data" correlationId, map[string]interface{ "id": id })
 //		if callErr != nil {
 //			return callErr
 //		}
-//		defer timing.EndTiming()
+//		defer timing.EndTiming(ctx, nil)
 //		return awsclient.HandleLambdaResponse[*cdata.DataPage[MyData]](calValue)
 //	}
 //	...
