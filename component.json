@@ -1,5 +1,5 @@
 {
-    "name":  "pip-services3-aws-go",
+    "name":  "pip-services3-aws-gox",
     "type": "module",
     "language": "go",
     "version": "1.0.0",
