@@ -1,5 +1,16 @@
 # <img src="https://uploads-ssl.webflow.com/5ea5d3315186cf5ec60c3ee4/5edf1c94ce4c859f2b188094_logo.svg" alt="Pip.Services Logo" width="200"> <br/> AWS specific components for Golang Changelog
 
+## <a name="1.1.0"></a> 1.1.0 (2023-03-01)
+
+### Breaking changes
+* Renamed descriptors for services:
+    - "\*:service:lambda\*:1.0" -> "\*:service:awslambda\*:1.0"
+    - "\*:service:commandable-lambda\*:1.0" -> "\*:service:commandable-awslambda\*:1.0"
+
+### Features
+- Updated dependencies
+
+
 ## <a name="1.0.0"></a> 1.0.0 (2022-10-06)
 
 ### Features

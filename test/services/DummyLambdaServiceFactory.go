@@ -18,8 +18,8 @@ func NewDummyLambdaServiceFactory() *DummyLambdaServiceFactory {
 	c := DummyLambdaServiceFactory{
 		Factory:                    cbuild.NewFactory(),
 		Descriptor:                 cref.NewDescriptor("pip-services-dummies", "factory", "default", "default", "1.0"),
-		LambdaServiceDescriptor:    cref.NewDescriptor("pip-services-dummies", "service", "lambda", "*", "1.0"),
-		CmdLambdaServiceDescriptor: cref.NewDescriptor("pip-services-dummies", "service", "commandable-lambda", "*", "1.0"),
+		LambdaServiceDescriptor:    cref.NewDescriptor("pip-services-dummies", "service", "awslambda", "*", "1.0"),
+		CmdLambdaServiceDescriptor: cref.NewDescriptor("pip-services-dummies", "service", "commandable-awslambda", "*", "1.0"),
 	}
 
 	c.RegisterType(c.LambdaServiceDescriptor, NewDummyLambdaService)

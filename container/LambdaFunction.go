@@ -267,7 +267,7 @@ func (c *LambdaFunction) Open(ctx context.Context, correlationId string) error {
 func (c *LambdaFunction) RegisterServices() {
 	// Extract regular and commandable Lambda services from references
 	servicesRefs := c.references.GetOptional(
-		cref.NewDescriptor("*", "service", "lambda", "*", "*"),
+		cref.NewDescriptor("*", "service", "awslambda", "*", "*"),
 	)
 
 	services := make([]awsserv.ILambdaService, 0)
@@ -279,7 +279,7 @@ func (c *LambdaFunction) RegisterServices() {
 	}
 
 	cmdServicesRefs := c.references.GetOptional(
-		cref.NewDescriptor("*", "service", "commandable-lambda", "*", "*"),
+		cref.NewDescriptor("*", "service", "commandable-awslambda", "*", "*"),
 	)
 
 	for _, service := range cmdServicesRefs {

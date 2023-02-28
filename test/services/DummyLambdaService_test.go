@@ -17,7 +17,7 @@ func TestDummyLambdaService(t *testing.T) {
 	restConfig := cconf.NewConfigParamsFromTuples(
 		"logger.descriptor", "pip-services:logger:console:default:1.0",
 		"controller.descriptor", "pip-services-dummies:controller:default:default:1.0",
-		"service.descriptor", "pip-services-dummies:service:lambda:default:1.0",
+		"service.descriptor", "pip-services-dummies:service:awslambda:default:1.0",
 	)
 
 	ctx := context.Background()
