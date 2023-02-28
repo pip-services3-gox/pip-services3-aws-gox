@@ -32,6 +32,8 @@ import (
 //	- \*:counters:\*:\*:1.0          (optional) ICounters components to pass collected measurements
 //	- \*:discovery:\*:\*:1.0         (optional) IDiscovery services to resolve connection
 //	- \*:credential-store:\*:\*:1.0  (optional) Credential stores to resolve credentials
+//	- \*:service:awslambda:\*:1.0       		(optional) ILambdaService services to handle action requests
+//	- \*:service:commandable-awslambda:\*:1.0	(optional) ILambdaService services to handle action requests
 //
 // See LambdaClient
 //
