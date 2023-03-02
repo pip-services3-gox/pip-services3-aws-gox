@@ -1,6 +1,10 @@
 # <img src="https://uploads-ssl.webflow.com/5ea5d3315186cf5ec60c3ee4/5edf1c94ce4c859f2b188094_logo.svg" alt="Pip.Services Logo" width="200"> <br/> AWS specific components for Golang Changelog
 
-## <a name="1.1.0 - 1.1.1"></a> 1.1.0 - 1.1.1 (2023-03-01)
+## <a name="1.1.2"></a> 1.1.2 (2023-03-03)
+
+### Features
+- Now Register is not required for rewriting in Lambda container for inheritance
+## <a name="1.1.0 - 1.1.1"></a> 1.1.0 - 1.1.1 (2023-03-02)
 
 ### Breaking changes
 * Renamed descriptors for services:

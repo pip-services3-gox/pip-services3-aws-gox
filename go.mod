@@ -3,8 +3,8 @@ module github.com/pip-services3-gox/pip-services3-aws-gox
 go 1.18
 
 require (
-	github.com/aws/aws-lambda-go v1.37.0
-	github.com/aws/aws-sdk-go v1.44.211
+	github.com/aws/aws-lambda-go v1.38.0
+	github.com/aws/aws-sdk-go v1.44.213
 	github.com/pip-services3-gox/pip-services3-commons-gox v1.0.8
 	github.com/pip-services3-gox/pip-services3-components-gox v1.0.7
 	github.com/pip-services3-gox/pip-services3-container-gox v1.0.7

@@ -131,6 +131,8 @@ func InheriteLambdaFunction(overrides ILambdaFunctionOverrides, name string, des
 	return c
 }
 
+func (c *LambdaFunction) Register() {}
+
 func (c *LambdaFunction) getConfigPath() string {
 	res := os.Getenv("CONFIG_PATH")
 	if res == "" {
