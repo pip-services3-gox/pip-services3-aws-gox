@@ -9,7 +9,7 @@ The module contains the following packages:
 - [**Build**](https://godoc.org/github.com/pip-services3-gox/pip-services3-aws-gox/build) - factories for constructing module components
 - [**Clients**](https://godoc.org/github.com/pip-services3-gox/pip-services3-aws-gox/clients) - client components for working with Lambda AWS
 - [**Connect**](https://godoc.org/github.com/pip-services3-gox/pip-services3-aws-gox/connect) - components of installation and connection settings
-- [**Container**](https://godoc.org/github.com/pip-services3-gox/pip-services3-aws-gox/container) - components for creating containers for Lambda server-side AWS functions
+- [**Container**](https://godoc.org/github.com/pip-services3-gox/pip-services3-aws-gox/containers) - components for creating containers for Lambda server-side AWS functions
 - [**Count**](https://godoc.org/github.com/pip-services3-gox/pip-services3-aws-gox/count) - components of working with counters (metrics) with saving data in the CloudWatch AWS service
 - [**Log**](https://godoc.org/github.com/pip-services3-gox/pip-services3-aws-gox/log) - logging components with saving data in the CloudWatch AWS service
 

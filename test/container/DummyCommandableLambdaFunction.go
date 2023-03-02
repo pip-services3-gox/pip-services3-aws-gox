@@ -3,7 +3,7 @@ package test_container
 import (
 	"context"
 
-	awscont "github.com/pip-services3-gox/pip-services3-aws-gox/container"
+	awscont "github.com/pip-services3-gox/pip-services3-aws-gox/containers"
 	awstest "github.com/pip-services3-gox/pip-services3-aws-gox/test"
 	cref "github.com/pip-services3-gox/pip-services3-commons-gox/refer"
 )

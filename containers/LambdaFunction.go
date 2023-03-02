@@ -1,4 +1,4 @@
-package container
+package containers
 
 import (
 	"context"
@@ -29,24 +29,24 @@ import (
 //
 // Configuration parameters
 //
-//	- dependencies:
-//		- controller:                  override for Controller dependency
-//	- connections:
-//		- discovery_key:               (optional) a key to retrieve the connection from IDiscovery
-//		- region:                      (optional) AWS region
-//	- credentials:
-//		- store_key:                   (optional) a key to retrieve the credentials from ICredentialStore
-//		- access_id:                   AWS access/client id
-//		- access_key:                  AWS access/client id
+//   - dependencies:
+//   - controller:                  override for Controller dependency
+//   - connections:
+//   - discovery_key:               (optional) a key to retrieve the connection from IDiscovery
+//   - region:                      (optional) AWS region
+//   - credentials:
+//   - store_key:                   (optional) a key to retrieve the credentials from ICredentialStore
+//   - access_id:                   AWS access/client id
+//   - access_key:                  AWS access/client id
 //
 // References
 //
-//	- \*:logger:\*:\*:1.0            (optional) ILogger components to pass log messages
-//	- \*:counters:\*:\*:1.0          (optional) ICounters components to pass collected measurements
-//	- \*:discovery:\*:\*:1.0         (optional) IDiscovery services to resolve connection
-//	- \*:credential-store:\*:\*:1.0  (optional) Credential stores to resolve credentials
+//   - \*:logger:\*:\*:1.0            (optional) ILogger components to pass log messages
+//   - \*:counters:\*:\*:1.0          (optional) ICounters components to pass collected measurements
+//   - \*:discovery:\*:\*:1.0         (optional) IDiscovery services to resolve connection
+//   - \*:credential-store:\*:\*:1.0  (optional) Credential stores to resolve credentials
 //
-// See LambdaClient
+// # See LambdaClient
 //
 // Example:
 //
@@ -93,7 +93,6 @@ import (
 //	lambda := NewMyLambdaFunction();
 //
 //	lambda.Run(context.Context())
-//
 type LambdaFunction struct {
 	*cproc.Container
 	Overrides ILambdaFunctionOverrides
@@ -184,8 +183,8 @@ func (c *LambdaFunction) captureExit(ctx context.Context, correlationId string) 
 
 // Sets references to dependent components.
 // Parameters:
-//	- ctx context.Context	operation context.
-//	- references 	references to locate the component dependencies.
+//   - ctx context.Context	operation context.
+//   - references 	references to locate the component dependencies.
 func (c *LambdaFunction) SetReferences(ctx context.Context, references cref.IReferences) {
 	c.references = references
 	c.counters.SetReferences(ctx, references)
@@ -196,9 +195,10 @@ func (c *LambdaFunction) SetReferences(ctx context.Context, references cref.IRef
 // Adds instrumentation to log calls and measure call time.
 // It returns a Timing object that is used to end the time measurement.
 // Parameters:
-//		- ctx context.Context	operation context.
-//		- correlationId	(optional) transaction id to trace execution through call chain.
-//		- name	a method name.
+//   - ctx context.Context	operation context.
+//   - correlationId	(optional) transaction id to trace execution through call chain.
+//   - name	a method name.
+//
 // Returns Timing object to end the time measurement.
 func (c *LambdaFunction) Instrument(ctx context.Context, correlationId string, name string) *rpcserv.InstrumentTiming {
 	c.Logger().Trace(ctx, correlationId, "Executing %s method", name)
@@ -212,11 +212,12 @@ func (c *LambdaFunction) Instrument(ctx context.Context, correlationId string, n
 
 // InstrumentError method are adds instrumentation to error handling.
 // Parameters:
-//		- ctx context.Context	operation context.
-//		- correlationId  string  (optional) transaction id to trace execution through call chain.
-//		- name    string         a method name.
-//		- err     error          an occured error
-//		- result  any    (optional) an execution result
+//   - ctx context.Context	operation context.
+//   - correlationId  string  (optional) transaction id to trace execution through call chain.
+//   - name    string         a method name.
+//   - err     error          an occured error
+//   - result  any    (optional) an execution result
+//
 // Returns:  result any, err error
 // (optional) an execution callback
 func (c *LambdaFunction) InstrumentError(ctx context.Context, correlationId string, name string, errIn error,
@@ -232,7 +233,7 @@ func (c *LambdaFunction) InstrumentError(ctx context.Context, correlationId stri
 // instantiate components and manage their lifecycle,
 // makes this function ready to access action calls.
 // Parameters:
-//		- ctx context.Context	operation context.
+//   - ctx context.Context	operation context.
 func (c *LambdaFunction) Run(ctx context.Context) error {
 	correlationId := c.Info().Name
 
@@ -245,10 +246,11 @@ func (c *LambdaFunction) Run(ctx context.Context) error {
 	return c.Open(ctx, correlationId)
 }
 
-//  Opens the component.
+//	Opens the component.
+//
 // Parameters:
-//		- ctx context.Context	operation context.
-//		- correlationId 	(optional) transaction id to trace execution through call chain.
+//   - ctx context.Context	operation context.
+//   - correlationId 	(optional) transaction id to trace execution through call chain.
 func (c *LambdaFunction) Open(ctx context.Context, correlationId string) error {
 	if c.IsOpen() {
 		return nil
@@ -299,6 +301,7 @@ func (c *LambdaFunction) RegisterServices() {
 }
 
 // Registers an action in this lambda function.
+//
 //	Parameters:
 //		- ctx context.Context	operation context.
 //		- cmd           a action/command name.
@@ -396,8 +399,8 @@ func (c *LambdaFunction) Handler(ctx context.Context, event map[string]any) (str
 }
 
 // Gets entry point into this lambda function.
-//	- event     an incoming event object with invocation parameters.
-//	- context   a context object with local references.
+//   - event     an incoming event object with invocation parameters.
+//   - context   a context object with local references.
 func (c *LambdaFunction) GetHandler() func(ctx context.Context, event map[string]any) (string, error) {
 
 	// Return plugin function
@@ -407,13 +410,13 @@ func (c *LambdaFunction) GetHandler() func(ctx context.Context, event map[string
 	}
 }
 
-//	Calls registered action in this lambda function.
-//	"cmd" parameter in the action parameters determin
-//	what action shall be called.
+// Calls registered action in this lambda function.
+// "cmd" parameter in the action parameters determin
+// what action shall be called.
 //
-//	This method shall only be used in testing.
-//	   - params action parameters.
-//	   - callback callback function that receives action result or error.
+// This method shall only be used in testing.
+//   - params action parameters.
+//   - callback callback function that receives action result or error.
 func (c *LambdaFunction) Act(params map[string]any) (string, error) {
 	ctx := context.TODO()
 	return c.GetHandler()(ctx, params)

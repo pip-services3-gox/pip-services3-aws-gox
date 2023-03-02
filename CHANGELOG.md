@@ -19,7 +19,7 @@
 * **clients** client components for working with Lambda AWS
 * **services**  components for creating services
 * **connect** components of installation and connection settings
-* **container**  components for creating containers
+* **containers**  components for creating containers
 * **count** components of working with counters (metrics)
 * **log** logging components with saving data
 

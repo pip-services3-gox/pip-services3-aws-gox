@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"github.com/aws/aws-lambda-go/lambda"
-	awscont "github.com/pip-services3-gox/pip-services3-aws-gox/test/container"
+	awscont "github.com/pip-services3-gox/pip-services3-aws-gox/test/containers"
 )
 
 func main() {

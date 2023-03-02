@@ -4,7 +4,7 @@ import (
 	"context"
 	"encoding/json"
 
-	awscont "github.com/pip-services3-gox/pip-services3-aws-gox/container"
+	awscont "github.com/pip-services3-gox/pip-services3-aws-gox/containers"
 	awstest "github.com/pip-services3-gox/pip-services3-aws-gox/test"
 	cconv "github.com/pip-services3-gox/pip-services3-commons-gox/convert"
 	cdata "github.com/pip-services3-gox/pip-services3-commons-gox/data"

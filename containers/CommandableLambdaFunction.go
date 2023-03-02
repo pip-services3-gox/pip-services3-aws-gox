@@ -1,4 +1,4 @@
-package container
+package containers
 
 import (
 	"context"
@@ -16,26 +16,26 @@ import (
 //
 // Configuration parameters ###
 //
-//	- dependencies:
-//		- controller:                  override for Controller dependency
-//	- connections:
-//		- discovery_key:               (optional) a key to retrieve the connection from IDiscovery
-//		- region:                      (optional) AWS region
-//	- credentials:
-//		- store_key:                   (optional) a key to retrieve the credentials from ICredentialStore
-//		- access_id:                   AWS access/client id
-//		- access_key:                  AWS access/client id
+//   - dependencies:
+//   - controller:                  override for Controller dependency
+//   - connections:
+//   - discovery_key:               (optional) a key to retrieve the connection from IDiscovery
+//   - region:                      (optional) AWS region
+//   - credentials:
+//   - store_key:                   (optional) a key to retrieve the credentials from ICredentialStore
+//   - access_id:                   AWS access/client id
+//   - access_key:                  AWS access/client id
 //
 // References
 //
-//	- \*:logger:\*:\*:1.0            (optional) ILogger components to pass log messages
-//	- \*:counters:\*:\*:1.0          (optional) ICounters components to pass collected measurements
-//	- \*:discovery:\*:\*:1.0         (optional) IDiscovery services to resolve connection
-//	- \*:credential-store:\*:\*:1.0  (optional) Credential stores to resolve credentials
-//	- \*:service:awslambda:\*:1.0       		(optional) ILambdaService services to handle action requests
-//	- \*:service:commandable-awslambda:\*:1.0	(optional) ILambdaService services to handle action requests
+//   - \*:logger:\*:\*:1.0            (optional) ILogger components to pass log messages
+//   - \*:counters:\*:\*:1.0          (optional) ICounters components to pass collected measurements
+//   - \*:discovery:\*:\*:1.0         (optional) IDiscovery services to resolve connection
+//   - \*:credential-store:\*:\*:1.0  (optional) Credential stores to resolve credentials
+//   - \*:service:awslambda:\*:1.0       		(optional) ILambdaService services to handle action requests
+//   - \*:service:commandable-awslambda:\*:1.0	(optional) ILambdaService services to handle action requests
 //
-// See LambdaClient
+// # See LambdaClient
 //
 // Example:
 //
@@ -55,15 +55,14 @@ import (
 //	lambda := NewMyCommandableLambdaFunction();
 //
 //	lambda.Run(context.Context())
-//
 type CommandableLambdaFunction struct {
 	*LambdaFunction
 }
 
 // Creates a new instance of this lambda function.
 //
-//	- name          (optional) a container name (accessible via ContextInfo)
-//	- description   (optional) a container description (accessible via ContextInfo)
+//   - name          (optional) a container name (accessible via ContextInfo)
+//   - description   (optional) a container description (accessible via ContextInfo)
 func NewCommandableLambdaFunction(name string, description string) *CommandableLambdaFunction {
 	c := &CommandableLambdaFunction{}
 	c.LambdaFunction = InheriteLambdaFunction(c, name, description)
